@@ -8,6 +8,9 @@ let wikiData = [
 // User accounts
 let users = [];
 
+// Flag to track whether user is authenticated
+let isAuthenticated = false;
+
 // Function to render wiki content
 function renderWiki() {
     const contentElement = document.getElementById('content');
@@ -23,12 +26,16 @@ function renderWiki() {
 // Function to add a new blog post
 function addBlog(event) {
     event.preventDefault();
-    const title = document.getElementById('blogTitle').value;
-    const content = document.getElementById('blogContent').value;
-    if (title && content) {
-        wikiData.push({ title, content });
-        renderWiki();
-        document.getElementById('blogForm').reset();
+    if (isAuthenticated) {
+        const title = document.getElementById('blogTitle').value;
+        const content = document.getElementById('blogContent').value;
+        if (title && content) {
+            wikiData.push({ title, content });
+            renderWiki();
+            document.getElementById('blogForm').reset();
+        }
+    } else {
+        alert('Please sign in or create an account to post.');
     }
 }
 
@@ -62,7 +69,9 @@ function signUp(event) {
         } else {
             // Create new user
             users.push({ username, password });
-            alert('Sign-up successful! You can now login.');
+            isAuthenticated = true;
+            alert('Sign-up successful! You can now post.');
+            enableBlogForm();
             document.getElementById('signupForm').reset();
         }
     } else {
@@ -79,14 +88,22 @@ function login(event) {
         // Check if user exists and password matches
         const user = users.find(user => user.username === username && user.password === password);
         if (user) {
-            alert('Login successful!');
-            // Proceed with whatever action you want after successful login
+            isAuthenticated = true;
+            alert('Login successful! You can now post.');
+            enableBlogForm();
         } else {
             alert('Invalid username or password.');
         }
     } else {
         alert('Please enter a username and password.');
     }
+}
+
+// Function to enable blog post form
+function enableBlogForm() {
+    document.getElementById('blogTitle').removeAttribute('disabled');
+    document.getElementById('blogContent').removeAttribute('disabled');
+    document.getElementById('postButton').removeAttribute('disabled');
 }
 
 // Add event listener to the blog form
