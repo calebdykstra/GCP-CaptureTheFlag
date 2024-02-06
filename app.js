@@ -1,71 +1,51 @@
 // Sample data for demonstration
-const wikiData = [
-    { title: 'Introduction', content: 'Welcome to the Space Wiki! This is the introduction.' },
-    { title: 'Satellites', content: 'Satellites are objects that orbit planets.' },
-    { title: 'Space Agencies', content: 'NASA, ESA, and others explore outer space.' }
+let blogs = [
+    { id: 1, title: 'First Blog Post', content: 'This is the content of the first blog post.' },
+    { id: 2, title: 'Second Blog Post', content: 'This is the content of the second blog post.' }
 ];
 
-// Function to render wiki content
-function renderWiki() {
-    const contentElement = document.getElementById('content');
-    contentElement.innerHTML = ''; // Clear existing content
+// Function to render blogs
+function renderBlogs() {
+    const blogList = document.getElementById('blog-list');
+    blogList.innerHTML = ''; // Clear existing content
 
-    wikiData.forEach(entry => {
-        const article = document.createElement('article');
-        article.innerHTML = `<h2>${entry.title}</h2><p>${entry.content}</p>`;
-        contentElement.appendChild(article);
+    blogs.forEach(blog => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `<h3>${blog.title}</h3><p>${blog.content}</p><button onclick="deleteBlog(${blog.id})">Delete</button>`;
+        blogList.appendChild(listItem);
     });
 }
 
-// Function to handle registration form submission
-function handleRegistration(event) {
+// Function to add a new blog
+function addBlog(event) {
     event.preventDefault(); // Prevent form submission to a server
 
     // Get form inputs
-    const username = document.getElementById('reg-username').value;
-    const password = document.getElementById('reg-password').value;
+    const title = document.getElementById('title').value;
+    const content = document.getElementById('content').value;
 
-    // Store user data locally (for demonstration purposes)
-    localStorage.setItem('username', username);
-    localStorage.setItem('password', password);
+    // Generate a unique ID for the new blog
+    const id = blogs.length > 0 ? blogs[blogs.length - 1].id + 1 : 1;
 
-    // Redirect or display a success message
-    alert('Registration successful!');
+    // Add the new blog to the list
+    blogs.push({ id, title, content });
 
-    // Clear form fields
-    document.getElementById('registration-form').reset();
-}
-
-// Add event listener to the registration form
-document.getElementById('registration-form').addEventListener('submit', handleRegistration);
-
-// Function to handle login form submission
-function handleLogin(event) {
-    event.preventDefault(); // Prevent form submission to a server
-
-    // Get form inputs
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    // Retrieve user data from localStorage
-    const storedUsername = localStorage.getItem('username');
-    const storedPassword = localStorage.getItem('password');
-
-    // Check if the provided credentials match the stored user data
-    if (username === storedUsername && password === storedPassword) {
-        alert('Login successful!');
-        // Redirect or perform other actions upon successful login
-    } else {
-        alert('Invalid username or password. Please try again.');
-    }
+    // Re-render the blogs
+    renderBlogs();
 
     // Clear form fields
-    document.getElementById('login-form').reset();
+    document.getElementById('blog-form').reset();
 }
 
-// Add event listener to the login form
-document.getElementById('login-form').addEventListener('submit', handleLogin);
+// Function to delete a blog
+function deleteBlog(id) {
+    // Filter out the blog with the specified ID
+    blogs = blogs.filter(blog => blog.id !== id);
+
+    // Re-render the blogs
+    renderBlogs();
+}
 
 // Initial render
-renderWiki();
+renderBlogs();
 
