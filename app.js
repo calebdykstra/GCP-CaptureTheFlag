@@ -1,51 +1,148 @@
-// Sample data for demonstration
-let blogs = [
-    { id: 1, title: 'First Blog Post', content: 'This is the content of the first blog post.' },
-    { id: 2, title: 'Second Blog Post', content: 'This is the content of the second blog post.' }
-];
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Wiki</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
 
-// Function to render blogs
-function renderBlogs() {
-    const blogList = document.getElementById('blog-list');
-    blogList.innerHTML = ''; // Clear existing content
+        #content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-    blogs.forEach(blog => {
-        const listItem = document.createElement('li');
-        listItem.innerHTML = `<h3>${blog.title}</h3><p>${blog.content}</p><button onclick="deleteBlog(${blog.id})">Delete</button>`;
-        blogList.appendChild(listItem);
-    });
-}
+        article {
+            background-color: #111;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
 
-// Function to add a new blog
-function addBlog(event) {
-    event.preventDefault(); // Prevent form submission to a server
+        h2 {
+            color: #ff9800;
+            font-size: 24px;
+            margin-top: 0;
+        }
 
-    // Get form inputs
-    const title = document.getElementById('title').value;
-    const content = document.getElementById('content').value;
+        p {
+            font-size: 18px;
+        }
 
-    // Generate a unique ID for the new blog
-    const id = blogs.length > 0 ? blogs[blogs.length - 1].id + 1 : 1;
+        button {
+            background-color: #ff9800;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
 
-    // Add the new blog to the list
-    blogs.push({ id, title, content });
+        button:hover {
+            background-color: #ffa726;
+        }
 
-    // Re-render the blogs
-    renderBlogs();
+        form {
+            margin-top: 20px;
+        }
 
-    // Clear form fields
-    document.getElementById('blog-form').reset();
-}
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+        }
 
-// Function to delete a blog
-function deleteBlog(id) {
-    // Filter out the blog with the specified ID
-    blogs = blogs.filter(blog => blog.id !== id);
+        input[type="submit"] {
+            background-color: #ff9800;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
 
-    // Re-render the blogs
-    renderBlogs();
-}
+        input[type="submit"]:hover {
+            background-color: #ffa726;
+        }
+    </style>
+</head>
+<body>
+    <div id="content"></div>
+    <hr>
+    <form id="blogForm">
+        <input type="text" id="blogTitle" placeholder="Enter title">
+        <textarea id="blogContent" placeholder="Enter content"></textarea>
+        <input type="submit" value="Post">
+    </form>
 
-// Initial render
-renderBlogs();
+    <script>
+        // Sample data for demonstration
+        let wikiData = [
+            { title: 'Introduction', content: 'Welcome to the Space Wiki! This is the introduction.' },
+            { title: 'Satellites', content: 'Satellites are objects that orbit planets.' },
+            { title: 'Space Agencies', content: 'NASA, ESA, and others explore outer space.' }
+        ];
 
+        // Function to render wiki content
+        function renderWiki() {
+            const contentElement = document.getElementById('content');
+            contentElement.innerHTML = ''; // Clear existing content
+
+            wikiData.forEach((entry, index) => {
+                const article = document.createElement('article');
+                article.innerHTML = `<h2>${entry.title}</h2><p>${entry.content}</p><button onclick="editBlog(${index})">Edit</button><button onclick="deleteBlog(${index})">Delete</button>`;
+                contentElement.appendChild(article);
+            });
+        }
+
+        // Initial render
+        renderWiki();
+
+        // Function to add a new blog post
+        function addBlog(event) {
+            event.preventDefault();
+            const title = document.getElementById('blogTitle').value;
+            const content = document.getElementById('blogContent').value;
+            if (title && content) {
+                wikiData.push({ title, content });
+                renderWiki();
+                document.getElementById('blogForm').reset();
+            }
+        }
+
+        // Function to delete a blog post
+        function deleteBlog(index) {
+            wikiData.splice(index, 1);
+            renderWiki();
+        }
+
+        // Function to edit a blog post
+        function editBlog(index) {
+            const newTitle = prompt("Enter new title:");
+            const newContent = prompt("Enter new content:");
+            if (newTitle !== null && newContent !== null) {
+                wikiData[index].title = newTitle;
+                wikiData[index].content = newContent;
+                renderWiki();
+            }
+        }
+
+        // Add event listener to the form
+        document.getElementById('blogForm').addEventListener('submit', addBlog);
+    </script>
+</body>
+</html>
