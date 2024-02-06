@@ -12,6 +12,29 @@
     </header>
     <main id="content">
         <!-- Wiki content will be dynamically loaded here -->
+        <!-- Registration form -->
+        <section id="registration-section" style="display: none;">
+            <h2>Register</h2>
+            <form id="registration-form">
+                <label for="reg-username">Username:</label>
+                <input type="text" id="reg-username" name="reg-username" required><br>
+                <label for="reg-password">Password:</label>
+                <input type="password" id="reg-password" name="reg-password" required><br>
+                <button type="submit">Register</button>
+            </form>
+        </section>
+
+        <!-- Login form -->
+        <section id="login-section">
+            <h2>Login</h2>
+            <form id="login-form">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required><br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required><br>
+                <button type="submit">Login</button>
+            </form>
+        </section>
     </main>
     <script src="app.js"></script>
 </body>

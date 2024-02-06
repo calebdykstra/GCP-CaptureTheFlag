@@ -1,73 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Space Wiki</title>
-</head>
-<body>
-    <div id="content"></div>
-    <hr>
-    <form id="blogForm">
-        <input type="text" id="blogTitle" placeholder="Enter title">
-        <textarea id="blogContent" placeholder="Enter content"></textarea>
-        <button type="submit">Post</button>
-    </form>
+// Sample data for demonstration
+const wikiData = [
+    { title: 'Introduction', content: 'Welcome to the Space Wiki! This is the introduction.' },
+    { title: 'Satellites', content: 'Satellites are objects that orbit planets.' },
+    { title: 'Space Agencies', content: 'NASA, ESA, and others explore outer space.' }
+];
 
-    <script>
-        // Sample data for demonstration
-        let wikiData = [
-            { title: 'Introduction', content: 'Welcome to the Space Wiki! This is the introduction.' },
-            { title: 'Satellites', content: 'Satellites are objects that orbit planets.' },
-            { title: 'Space Agencies', content: 'NASA, ESA, and others explore outer space.' }
-        ];
+// Function to render wiki content
+function renderWiki() {
+    const contentElement = document.getElementById('content');
+    contentElement.innerHTML = ''; // Clear existing content
 
-        // Function to render wiki content
-        function renderWiki() {
-            const contentElement = document.getElementById('content');
-            contentElement.innerHTML = ''; // Clear existing content
+    wikiData.forEach(entry => {
+        const article = document.createElement('article');
+        article.innerHTML = `<h2>${entry.title}</h2><p>${entry.content}</p>`;
+        contentElement.appendChild(article);
+    });
+}
 
-            wikiData.forEach((entry, index) => {
-                const article = document.createElement('article');
-                article.innerHTML = `<h2>${entry.title}</h2><p>${entry.content}</p><button onclick="editBlog(${index})">Edit</button><button onclick="deleteBlog(${index})">Delete</button>`;
-                contentElement.appendChild(article);
-            });
-        }
+// Function to handle registration form submission
+function handleRegistration(event) {
+    event.preventDefault(); // Prevent form submission to a server
 
-        // Initial render
-        renderWiki();
+    // Get form inputs
+    const username = document.getElementById('reg-username').value;
+    const password = document.getElementById('reg-password').value;
 
-        // Function to add a new blog post
-        function addBlog(event) {
-            event.preventDefault();
-            const title = document.getElementById('blogTitle').value;
-            const content = document.getElementById('blogContent').value;
-            if (title && content) {
-                wikiData.push({ title, content });
-                renderWiki();
-                document.getElementById('blogForm').reset();
-            }
-        }
+    // Store user data locally (for demonstration purposes)
+    localStorage.setItem('username', username);
+    localStorage.setItem('password', password);
 
-        // Function to delete a blog post
-        function deleteBlog(index) {
-            wikiData.splice(index, 1);
-            renderWiki();
-        }
+    // Redirect or display a success message
+    alert('Registration successful!');
 
-        // Function to edit a blog post
-        function editBlog(index) {
-            const newTitle = prompt("Enter new title:");
-            const newContent = prompt("Enter new content:");
-            if (newTitle !== null && newContent !== null) {
-                wikiData[index].title = newTitle;
-                wikiData[index].content = newContent;
-                renderWiki();
-            }
-        }
+    // Clear form fields
+    document.getElementById('registration-form').reset();
+}
 
-        // Add event listener to the form
-        document.getElementById('blogForm').addEventListener('submit', addBlog);
-    </script>
-</body>
-</html>
+// Add event listener to the registration form
+document.getElementById('registration-form').addEventListener('submit', handleRegistration);
+
+// Function to handle login form submission
+function handleLogin(event) {
+    event.preventDefault(); // Prevent form submission to a server
+
+    // Get form inputs
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    // Retrieve user data from localStorage
+    const storedUsername = localStorage.getItem('username');
+    const storedPassword = localStorage.getItem('password');
+
+    // Check if the provided credentials match the stored user data
+    if (username === storedUsername && password === storedPassword) {
+        alert('Login successful!');
+        // Redirect or perform other actions upon successful login
+    } else {
+        alert('Invalid username or password. Please try again.');
+    }
+
+    // Clear form fields
+    document.getElementById('login-form').reset();
+}
+
+// Add event listener to the login form
+document.getElementById('login-form').addEventListener('submit', handleLogin);
+
+// Initial render
+renderWiki();
+
