@@ -5,6 +5,9 @@ let wikiData = [
     { title: 'Space Agencies', content: 'NASA, ESA, and others explore outer space.' }
 ];
 
+// User accounts
+let users = [];
+
 // Function to render wiki content
 function renderWiki() {
     const contentElement = document.getElementById('content');
@@ -16,9 +19,6 @@ function renderWiki() {
         contentElement.appendChild(article);
     });
 }
-
-// Initial render
-renderWiki();
 
 // Function to add a new blog post
 function addBlog(event) {
@@ -52,12 +52,38 @@ function editBlog(index) {
 // Function to handle sign-up form submission
 function signUp(event) {
     event.preventDefault();
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = document.getElementById('signupUsername').value;
+    const password = document.getElementById('signupPassword').value;
     if (username && password) {
-        // Here you can save the user credentials or create a fake account
-        alert('Sign-up successful!');
-        document.getElementById('signupForm').reset();
+        // Check if username already exists
+        const existingUser = users.find(user => user.username === username);
+        if (existingUser) {
+            alert('Username already exists. Please choose a different one.');
+        } else {
+            // Create new user
+            users.push({ username, password });
+            alert('Sign-up successful! You can now login.');
+            document.getElementById('signupForm').reset();
+        }
+    } else {
+        alert('Please enter a username and password.');
+    }
+}
+
+// Function to handle login form submission
+function login(event) {
+    event.preventDefault();
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+    if (username && password) {
+        // Check if user exists and password matches
+        const user = users.find(user => user.username === username && user.password === password);
+        if (user) {
+            alert('Login successful!');
+            // Proceed with whatever action you want after successful login
+        } else {
+            alert('Invalid username or password.');
+        }
     } else {
         alert('Please enter a username and password.');
     }
@@ -68,3 +94,6 @@ document.getElementById('blogForm').addEventListener('submit', addBlog);
 
 // Add event listener to the sign-up form
 document.getElementById('signupForm').addEventListener('submit', signUp);
+
+// Add event listener to the login form
+document.getElementById('loginForm').addEventListener('submit', login);
