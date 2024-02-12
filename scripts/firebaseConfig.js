@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 
-import { initializeApp } from "firebase/app";
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from "firebase/firestore";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -26,12 +26,24 @@ const firebaseConfig = {
   messagingSenderId: "779968149242",
 
   appId: "1:779968149242:web:b2aa479156fe8a9527fb43"
+
 };
 
 
 // Initialize Firebase
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
 const db = getFirestore(app);
+
+
+export const signUp = (email, password) => {
+  createUserWithEmailAndPassword(auth, email, password).then(cred => {
+    console.log(cred.user);
+    // close the signup modal & reset form
+    const signupForm = document.querySelector('#signup-form');
+    const modal = document.querySelector('#modal-signup');
+    M.Modal.getInstance(modal).close();
+    signupForm.reset();
+  })};
 
