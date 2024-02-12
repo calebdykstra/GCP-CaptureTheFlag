@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getFirestore, collection, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -41,9 +41,15 @@ const db = getFirestore(app);
 /* ------------------------------------------------------------------------------*/
 
 
+/*
+collection('guides').get().then(snapshot => {
+  setupGuides(snapshot.docs);
+});
+*/
+
 
 // Listen for auth status change. returns null if noone is logged in.
-auth.onAuthStateChanged(user => {
+onAuthStateChanged(auth, (user) => {
 
   //TEST: print user info every refresh
   if (user) {
@@ -103,6 +109,8 @@ logout.addEventListener('click', (e) => {
 const login = document.querySelector('#login-form');
 login.addEventListener('submit', (e) => {
   e.preventDefault();
+  const modal = document.querySelector('#modal-login');
+  const loginForm = document.querySelector('#login-form');
 
   //get user info
   const email = loginForm['login-email'].value;
@@ -114,8 +122,6 @@ login.addEventListener('submit', (e) => {
     //TEST: print user information when signed in
     //console.log(cred);
 
-    const modal = document.querySelector('#modal-login');
-    const loginForm = document.querySelector('#login-form');
     M.Modal.getInstance(modal).close();
     loginForm.reset();
   })
