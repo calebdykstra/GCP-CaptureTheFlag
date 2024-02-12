@@ -1,4 +1,5 @@
-import { app, auth, signUp } from './firebaseConfig.js';
+import { app, auth, signUp, signOut1 } from './firebaseConfig.js';
+
 //signup
 const signupForm = document.querySelector('#signup-form');
 signupForm.addEventListener('submit', (e) => {
@@ -16,3 +17,12 @@ signupForm.addEventListener('submit', (e) => {
     // sign up the user
     signUp(email, password);
 });
+
+//logout
+const logout = document.querySelector('#logout');
+logout.addEventListener('click', (e) => {
+    e.preventDefault();
+    signOut1();
+});
+
+//login

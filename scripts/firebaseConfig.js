@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getAuth, createUserWithEmailAndPassword, signOut } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -39,7 +39,10 @@ const db = getFirestore(app);
 
 export const signUp = (email, password) => {
   createUserWithEmailAndPassword(auth, email, password).then(cred => {
-    console.log(cred.user);
+
+    //TEST: print user token
+    //console.log(cred.user);
+
     // close the signup modal & reset form
     const signupForm = document.querySelector('#signup-form');
     const modal = document.querySelector('#modal-signup');
@@ -47,3 +50,11 @@ export const signUp = (email, password) => {
     signupForm.reset();
   })};
 
+export const signOut1 = () => {
+  signOut(auth).then(() => {
+
+    //TEST: print user signed out confirmation
+    //console.log('user signed out');
+    
+  })
+};
