@@ -32,13 +32,26 @@ const firebaseConfig = {
 
 // Initialize Firebase
 
-export const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
 
 //Signup
-export const signUp = (email, password) => {
+const signupForm = document.querySelector('#signup-form');
+signupForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  // get user info
+  const email = signupForm['signup-email'].value;
+  const password = signupForm['signup-password'].value;
+
+
+  //TEST: print the signup credentials to the console
+  //console.log(email, password);
+
+
+  // sign up the user
   createUserWithEmailAndPassword(auth, email, password).then(cred => {
 
     //TEST: print user token
@@ -50,27 +63,43 @@ export const signUp = (email, password) => {
     M.Modal.getInstance(modal).close();
     signupForm.reset();
   })
-};
+});
+
 
 
 //Signout
-export const signOut1 = () => {
-  signOut(auth).then(() => {
+const logout = document.querySelector('#logout');
+logout.addEventListener('click', (e) => {
+    e.preventDefault();
+    signOut(auth).then(() => {
 
-    //TEST: print user signed out confirmation
-    //console.log('user signed out');
+      //TEST: print user signed out confirmation
+      //console.log('user signed out');
+  
+    })
+});
 
-  })
-};
 
 
 //Login
-export const login1 = (email, password) => {
-  signInWithEmailAndPassword(auth, email, password).then((cred) => {
-    console.log(cred);
-    const modal = document.querySelector('#modal-login');
-    const loginForm = document.querySelector('#login-form');
-    M.Modal.getInstance(modal).close();
-    loginForm.reset();
-  })
-};
+const login = document.querySelector('#login-form');
+login.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    //get user info
+    const email = loginForm['login-email'].value;
+    const password = loginForm['login-password'].value;
+
+    //log the user in
+    signInWithEmailAndPassword(auth, email, password).then((cred) => {
+
+      //TEST: print user information when signed in
+      //console.log(cred);
+  
+      const modal = document.querySelector('#modal-login');
+      const loginForm = document.querySelector('#login-form');
+      M.Modal.getInstance(modal).close();
+      loginForm.reset();
+    })
+});
+
