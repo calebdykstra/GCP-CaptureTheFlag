@@ -1,4 +1,4 @@
-import { app, auth, signUp, signOut1 } from './firebaseConfig.js';
+import { app, auth, signUp, signOut1, login1 } from './firebaseConfig.js';
 
 //signup
 const signupForm = document.querySelector('#signup-form');
@@ -26,3 +26,14 @@ logout.addEventListener('click', (e) => {
 });
 
 //login
+const login = document.querySelector('#login-form');
+login.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    //get user info
+    const email = loginForm['login-email'].value;
+    const password = loginForm['login-password'].value;
+
+    //log the user in
+    login1(email, password);
+})
