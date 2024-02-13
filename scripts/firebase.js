@@ -43,22 +43,13 @@ const db = getFirestore(app);
 
 
 
-// Listen for auth status change. returns null if noone is logged in.
-onAuthStateChanged(auth, (user) => {
 
-  //TEST: print user info every refresh
-  if (user) {
-    console.log('user logged in: ', user);
-  } else {
-    console.log('user logged out');
-  }
-
-});
 
 
 
 //Signup
 const signupForm = document.querySelector('#signup-form');
+const signupErrorMessage = document.getElementById('signup-error-message');
 signupForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
@@ -80,8 +71,11 @@ signupForm.addEventListener('submit', (e) => {
     const modal = document.querySelector('#modal-signup');
     M.Modal.getInstance(modal).close();
     signupForm.reset();
-    window.location.reload();
-  })
+  }).catch((error) => {
+    // If login fails, show the error message
+    signupErrorMessage.style.display = 'block';
+    console.error('signup error', error);
+  });
 
 });
 
@@ -95,8 +89,6 @@ logout.addEventListener('click', (e) => {
 
     //TEST: print user signed out confirmation
     //console.log('user signed out');
-
-    window.location.reload();
   })
 });
 
@@ -108,33 +100,52 @@ login.addEventListener('submit', (e) => {
   e.preventDefault();
   const modal = document.querySelector('#modal-login');
   const loginForm = document.querySelector('#login-form');
+  const loginErrorMessage = document.getElementById('login-error-message');
 
   //get user info
   const email = loginForm['login-email'].value;
   const password = loginForm['login-password'].value;
 
   //log the user in
+  // Attempt to sign in with email and password
   signInWithEmailAndPassword(auth, email, password).then((cred) => {
-
     //TEST: print user information when signed in
-    console.log(cred);
-
+    //console.log(cred);
     M.Modal.getInstance(modal).close();
     loginForm.reset();
-    window.location.reload();
-  })
+  }).catch((error) => {
+    // If login fails, show the error message
+    loginErrorMessage.style.display = 'block';
+    console.error('login error', error);
+  });
+
 });
 
 
 
-// Firestore collection access
-/*
-collection('posts').get().then(snapshot => {
-  setupPosts(snapshot.docs);
-});*/
-const querySnapshot = await getDocs(collection(db, "posts"));
-setupPosts(querySnapshot);
-//TEST: print doc.id and doc.data in the console. prints error if user is not authorized to view docs.
-querySnapshot.forEach((doc) => {
-  console.log(doc.id, " => ", doc.data());
+// Listen for auth status change. Calls display method to display posts if logged in
+onAuthStateChanged(auth, (user) => {
+
+  //TEST: print user info every refresh
+  /*if (user) {
+    console.log('user logged in: ', user);
+  } else {
+    console.log('user logged out');
+  }*/
+
+  if (user) {
+    //TEST: print doc.id and doc.data in the console. prints error if user is not authorized to view docs.
+    /*querySnapshot.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+    });*/
+    const query = collection(db, "posts");
+    getDocs(query).then((querySnapshot) => {
+      setupPosts(querySnapshot);
+    }).catch((error) => {
+      console.error("Error fetching posts: ", error);
+      setupPosts(null);
+    });
+  } else {
+    setupPosts(null);
+  }
 });
