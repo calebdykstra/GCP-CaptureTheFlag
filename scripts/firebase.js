@@ -127,11 +127,11 @@ login.addEventListener('submit', (e) => {
 onAuthStateChanged(auth, (user) => {
 
   //TEST: print user info every refresh
-  /*if (user) {
+  if (user) {
     console.log('user logged in: ', user);
   } else {
     console.log('user logged out');
-  }*/
+  };
 
   if (user) {
     //TEST: print doc.id and doc.data in the console. prints error if user is not authorized to view docs.
@@ -142,11 +142,11 @@ onAuthStateChanged(auth, (user) => {
     onSnapshot(query, (querySnapshot) => {
       setupPosts(querySnapshot);
       setupUI(user);
-    })
+    });
   } else {
     setupUI();
     setupPosts(null);
-  }
+  };
 });
 
 
