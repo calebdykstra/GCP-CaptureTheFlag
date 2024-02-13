@@ -2,7 +2,8 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-import { getFirestore, collection, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { setupPosts } from "./index.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -41,12 +42,6 @@ const db = getFirestore(app);
 /* ------------------------------------------------------------------------------*/
 
 
-/*
-collection('guides').get().then(snapshot => {
-  setupGuides(snapshot.docs);
-});
-*/
-
 
 // Listen for auth status change. returns null if noone is logged in.
 onAuthStateChanged(auth, (user) => {
@@ -57,7 +52,6 @@ onAuthStateChanged(auth, (user) => {
   } else {
     console.log('user logged out');
   }
-
 
 });
 
@@ -86,7 +80,9 @@ signupForm.addEventListener('submit', (e) => {
     const modal = document.querySelector('#modal-signup');
     M.Modal.getInstance(modal).close();
     signupForm.reset();
+    window.location.reload();
   })
+
 });
 
 
@@ -100,6 +96,7 @@ logout.addEventListener('click', (e) => {
     //TEST: print user signed out confirmation
     //console.log('user signed out');
 
+    window.location.reload();
   })
 });
 
@@ -120,10 +117,24 @@ login.addEventListener('submit', (e) => {
   signInWithEmailAndPassword(auth, email, password).then((cred) => {
 
     //TEST: print user information when signed in
-    //console.log(cred);
+    console.log(cred);
 
     M.Modal.getInstance(modal).close();
     loginForm.reset();
+    window.location.reload();
   })
 });
 
+
+
+// Firestore collection access
+/*
+collection('posts').get().then(snapshot => {
+  setupPosts(snapshot.docs);
+});*/
+const querySnapshot = await getDocs(collection(db, "posts"));
+setupPosts(querySnapshot);
+//TEST: print doc.id and doc.data in the console. prints error if user is not authorized to view docs.
+querySnapshot.forEach((doc) => {
+  console.log(doc.id, " => ", doc.data());
+});
