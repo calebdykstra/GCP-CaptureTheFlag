@@ -86,10 +86,10 @@ signupForm.addEventListener('submit', (e) => {
     const modal = document.querySelector('#modal-signup');
     M.Modal.getInstance(modal).close();
     signupForm.reset();
+    document.querySelector('.error').innerHTML = '';
   }).catch((error) => {
     // If login fails, show the error message
-    signupErrorMessage.style.display = 'block';
-    console.error('signup error', error);
+    document.querySelector('.error').innerHTML = error.message;
   });
 
 });
@@ -128,10 +128,10 @@ login.addEventListener('submit', (e) => {
     //console.log(cred);
     M.Modal.getInstance(modal).close();
     loginForm.reset();
+    document.querySelector('.error').innerHTML = '';
   }).catch((error) => {
     // If login fails, show the error message
-    loginErrorMessage.style.display = 'block';
-    console.error('login error', error);
+    document.querySelector('.error').innerHTML = error.message;
   });
 
 });
