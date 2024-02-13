@@ -3,6 +3,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { getFirestore, collection, query, where, doc, addDoc, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-functions.js";
 import { setupPosts, setupUI } from "./index.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -36,13 +37,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const functions = getFunctions();
+
 
 
 
 /* ------------------------------------------------------------------------------*/
 
 
+const adminForm = document.querySelector('.admin-actions');
+adminForm.addEventListener('submit', (e) => {
+  e.preventDefault();
 
+  const adminEmail = document.querySelector('#admin-email').value;
+  const addAdminRole = httpsCallable(functions, 'addAdminRole');
+  addAdminRole({ email: adminEmail }).then((result) => {
+    console.log(result);
+  }).catch((error) => {
+    console.log("There was an error with functions:", error);
+  });
+});
 
 
 
@@ -155,7 +169,7 @@ onAuthStateChanged(auth, (user) => {
 const createForm = document.querySelector('#create-form');
 createForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  
+
   const data = {
     title: createForm['title'].value,
     content: createForm['content'].value
