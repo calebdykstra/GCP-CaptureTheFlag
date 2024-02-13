@@ -3,7 +3,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
-import { setupPosts } from "./index.js";
+import { setupPosts, setupUI } from "./index.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
 
@@ -141,11 +141,13 @@ onAuthStateChanged(auth, (user) => {
     const query = collection(db, "posts");
     getDocs(query).then((querySnapshot) => {
       setupPosts(querySnapshot);
+      setupUI(user);
     }).catch((error) => {
       console.error("Error fetching posts: ", error);
       setupPosts(null);
     });
   } else {
+    setupUI();
     setupPosts(null);
   }
 });

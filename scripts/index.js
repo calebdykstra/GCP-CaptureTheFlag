@@ -1,4 +1,20 @@
-// DOM elements
+// Hide unnecessary nav menu links
+const guideList = document.querySelector('.guides');
+const loggedOutLinks = document.querySelectorAll('.logged-out');
+const loggedInLinks = document.querySelectorAll('.logged-in');
+
+export const setupUI = (user) => {
+  if (user) {
+    // toggle user UI elements
+    loggedInLinks.forEach(item => item.style.display = 'block');
+    loggedOutLinks.forEach(item => item.style.display = 'none');
+  } else {
+    // toggle user elements
+    loggedInLinks.forEach(item => item.style.display = 'none');
+    loggedOutLinks.forEach(item => item.style.display = 'block');
+  }
+};
+
 // setup posts
 const postList = document.querySelector('.posts');
 export const setupPosts = (data) => {
