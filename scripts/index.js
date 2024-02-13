@@ -1,5 +1,5 @@
 // Hide unnecessary nav menu links
-const guideList = document.querySelector('.guides');
+const postList = document.querySelector('.posts');
 const loggedOutLinks = document.querySelectorAll('.logged-out');
 const loggedInLinks = document.querySelectorAll('.logged-in');
 
@@ -16,7 +16,6 @@ export const setupUI = (user) => {
 };
 
 // setup posts
-const postList = document.querySelector('.posts');
 export const setupPosts = (data) => {
 
   if (data != null) {

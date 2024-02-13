@@ -2,7 +2,7 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
-import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, query, where, doc, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { setupPosts, setupUI } from "./index.js";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -150,4 +150,27 @@ onAuthStateChanged(auth, (user) => {
     setupUI();
     setupPosts(null);
   }
+});
+
+
+
+//create new post
+const createForm = document.querySelector('#create-form');
+createForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const data = {
+    title: createForm['title'].value,
+    content: createForm['content'].value
+  };
+
+  addDoc(collection(db, 'posts'), data).then((docRef) => {
+    console.log("Document successfully written", docRef.id);
+    const modal = document.querySelector('#modal-create');
+    M.Modal.getInstance(modal).close();
+    createForm.reset();
+  }).catch((error) => {
+    console.error("Error writing document: ", error.message);
+  });
+
 });
