@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+import { getAuth, createUserWithEmailAndPassword, signOut, signInWithEmailAndPassword, onAuthStateChanged, getIdTokenResult } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
 import { getFirestore, collection, query, where, doc, addDoc, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-functions.js";
 import { setupPosts, setupUI } from "./index.js";
@@ -45,6 +45,8 @@ const functions = getFunctions();
 /* ------------------------------------------------------------------------------*/
 
 
+
+//Give users admin
 const adminForm = document.querySelector('.admin-actions');
 adminForm.addEventListener('submit', (e) => {
   e.preventDefault();
@@ -57,7 +59,6 @@ adminForm.addEventListener('submit', (e) => {
     console.log("There was an error with functions:", error);
   });
 });
-
 
 
 
@@ -141,21 +142,28 @@ login.addEventListener('submit', (e) => {
 onAuthStateChanged(auth, (user) => {
 
   //TEST: print user info every refresh
-  if (user) {
+  /*if (user) {
     console.log('user logged in: ', user);
   } else {
     console.log('user logged out');
-  };
+  };*/
 
   if (user) {
     //TEST: print doc.id and doc.data in the console. prints error if user is not authorized to view docs.
     /*querySnapshot.forEach((doc) => {
       console.log(doc.id, " => ", doc.data());
     });*/
+    user.getIdTokenResult().then(idTokenResult => {
+
+      //TEST: print the boolean of if user is admin
+      //console.log(idTokenResult.claims.admin);
+
+      user.admin = idTokenResult.claims.admin;
+      setupUI(user);
+    });
     const query = collection(db, "posts");
     onSnapshot(query, (querySnapshot) => {
       setupPosts(querySnapshot);
-      setupUI(user);
     });
   } else {
     setupUI();

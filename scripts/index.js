@@ -3,13 +3,19 @@ const postList = document.querySelector('.posts');
 const loggedOutLinks = document.querySelectorAll('.logged-out');
 const loggedInLinks = document.querySelectorAll('.logged-in');
 const accountDetails = document.querySelector('.account-details');
+const adminItems = document.querySelectorAll('.admin');
 
 export const setupUI = (user) => {
   if (user) {
+    //admin only
+    if(user.admin){
+      adminItems.forEach(item => item.style.display = 'block');
+    }
     //account info
     const html = `
     <div>Logged in as ${user.email}</div>
     <div>Account created on ${user.metadata.creationTime}</div>
+    <div>${user.admin ? 'Admin' : ''}</div>
     `;
     accountDetails.innerHTML = html;
 
@@ -17,6 +23,8 @@ export const setupUI = (user) => {
     loggedInLinks.forEach(item => item.style.display = 'block');
     loggedOutLinks.forEach(item => item.style.display = 'none');
   } else {
+    adminItems.forEach(item => item.style.display = 'none');
+
     // hide account info
     accountDetails.innerHTML = '';
 
