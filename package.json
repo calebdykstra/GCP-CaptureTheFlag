@@ -4,7 +4,7 @@
   "description": "TO DO:\r Have a functional sign up form\r Have the blogs be written by fake accounts \r Ensure when making an account the credentials get saved",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node functions/server.js"
   },
   "keywords": [],
   "author": "",
