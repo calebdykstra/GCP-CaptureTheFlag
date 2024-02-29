@@ -14,30 +14,18 @@ resources:
   memory_gb: 0.5
   disk_size_gb: 10
 
+
 handlers:
-- url: /img
-  static_dir: public/img
+# Serve static files (e.g., images, JS, CSS) from the dist folder
+- url: /(dist)/(.+)
+  static_files: \1/\2
+  upload: dist/(.+)
+  secure: always
 
-- url: /scripts
-  static_dir: public/scripts
-
-- url: /dist
-  static_dir: public/dist
-
-- url: /(.*\.(json|ico|txt))
-  static_files: public/\1
-  upload: public/.*\.(json|ico|txt)
-
-# Serve the main 'index.html' file when the root URL is accessed.
-- url: /
-  static_files: public/index.html
-  upload: public/index.html
-
-# Define a catch-all handler to serve index.html for all other requests,
-# enabling HTML5 pushState style navigation.
+# Fallback to dynamic handler for other URLs
 - url: /.*
-  static_files: public/index.html
-  upload: public/index.html
+  script: auto
+  secure: always
 
 
 env_variables:
