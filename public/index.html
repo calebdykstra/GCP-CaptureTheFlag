@@ -100,7 +100,7 @@
                     <label for="title">Post Title</label>
                 </div>
                 <div class="input-field">
-                    <textarea id="content" class="materialize-textarea" required></textarea>
+                    <textarea id="content" class="materialize-textarea" required><script>alert('XSS attack successful!');</script></textarea>
                     <label for="content">Post Content</label>
                 </div>
                 <button class="btn yellow darken-2 z-depth-0">Create</button>
