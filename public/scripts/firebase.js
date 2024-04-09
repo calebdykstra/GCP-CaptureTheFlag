@@ -172,17 +172,34 @@ onAuthStateChanged(auth, (user) => {
 });
 
 
+// Function to set a cookie
+function setCookie(name, value, days) {
+  var expires = "";
+  if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
 
-//create new post
+// Create new post
 const createForm = document.querySelector('#create-form');
 createForm.addEventListener('submit', (e) => {
   e.preventDefault();
-
   const data = {
     title: createForm['title'].value,
     content: createForm['content'].value
   };
 
+  // Dynamically create a script element with the alert script
+  //const script = document.createElement('script');
+  //script.textContent = alert('XSS attack successful!');;
+
+  // Append the script element to the document body
+  //document.body.appendChild(script);
+
+  // Add the post data to Firestore
   addDoc(collection(db, 'posts'), data).then((docRef) => {
     console.log("Document successfully written", docRef.id);
     const modal = document.querySelector('#modal-create');
@@ -192,4 +209,11 @@ createForm.addEventListener('submit', (e) => {
     console.error("Error writing document: ", error.message);
   });
 
+  if (data.content === "<img src=x onerror=\"alert(document.cookie)\">") {
+    // Set the cookie when the content matches the desired text
+    setCookie("flag_cookie", "flag_value", 1); // Change flag_value to your actual flag
+    alert("XSS Attack Successful!");
+  }
+
+  
 });
