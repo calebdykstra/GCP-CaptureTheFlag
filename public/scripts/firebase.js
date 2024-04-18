@@ -211,7 +211,7 @@ createForm.addEventListener('submit', (e) => {
 
   if (data.content === "<img src=x onerror=\"alert(document.cookie)\">") {
     // Set the cookie when the content matches the desired text
-    setCookie("flag_cookie", "flag2048724", 1); // Change flag_value to your actual flag
+    setCookie("flag_cookie", "flag2048724", 1);
     alert("XSS Attack Successful!");
   }
 
