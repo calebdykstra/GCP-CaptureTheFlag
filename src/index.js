@@ -15,19 +15,17 @@ import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
 
-  apiKey: "AIzaSyCG2JUqNI5IgB94VSDcGdBl3hIvWTS_xlY",
+  apiKey: "AIzaSyAqXBnBtOdVHacdN2vfPpiU-RIDGuqY2ZM",
 
-  authDomain: "fir-v1-d6ac4.firebaseapp.com",
+  authDomain: "fir-v2-4be27.firebaseapp.com",
 
-  projectId: "fir-v1-d6ac4",
+  projectId: "fir-v2-4be27",
 
-  storageBucket: "fir-v1-d6ac4.appspot.com",
+  storageBucket: "fir-v2-4be27.appspot.com",
 
-  messagingSenderId: "594317482980",
+  messagingSenderId: "779968149242",
 
-  appId: "1:594317482980:web:4e3bb7b42f3cbe16ff05f1",
-
-  measurementId: "G-F7V7B952WB"
+  appId: "1:779968149242:web:b2aa479156fe8a9527fb43"
 
 };
 
